@@ -15,6 +15,13 @@ int WINAPI WinMain()
 	MSG msg = { 0 };
 	while (GetMessageW(&msg, NULL, 0, 0))
 	{
-
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
 	}
+	UnhookWindowsHookEx(hHook);
+	return 0;
+}
+BOOL IsCaps(void)
+{
+
 }
